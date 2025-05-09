@@ -4,9 +4,7 @@ import SideBar from "./SideBar";
 import Footer from "./Footer";
 
 export default function LayoutPage(){
-    //#2F2F2F
-    //#121212
-    //#1F1F1F
+
     return(
         <div className="h-screen w-screen flex flex-col bg-black text-white">
             <div className="h-[8%] bg-black">

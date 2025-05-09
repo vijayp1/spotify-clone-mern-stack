@@ -5,6 +5,8 @@ import AboutPage from './pages/AboutPage'
 import ErrorPage from './pages/ErrorPage'
 import HomePage from './pages/HomePage'
 import BrowsePage from './pages/BrowsePage'
+import LoginPage from './pages/LoginPage'
+import SingupPage from './pages/SingupPage'
 
 const routes = [{
   path:'/',
@@ -20,6 +22,12 @@ const routes = [{
     path:'/browse',
     element:<BrowsePage/>
   }]
+},{
+  path:'/login',
+  element:<LoginPage/>
+},{
+  path:'/signup',
+  element:<SingupPage/>
 }]
 var router = createBrowserRouter(routes)
 function App() {
