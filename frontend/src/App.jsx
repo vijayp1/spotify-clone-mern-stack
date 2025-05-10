@@ -7,6 +7,8 @@ import HomePage from './pages/HomePage'
 import BrowsePage from './pages/BrowsePage'
 import LoginPage from './pages/LoginPage'
 import SingupPage from './pages/SingupPage'
+import CreatePlaylistPage from './pages/CreatePlaylistPage'
+import PrivateRoute from './components/PrivateRoute'
 
 const routes = [{
   path:'/',
@@ -16,11 +18,15 @@ const routes = [{
     path:'/',
     element:<HomePage/>
   },{
-    path:'/about',
-    element: <AboutPage/>
-  },{
     path:'/browse',
     element:<BrowsePage/>
+  },{
+    path:'/create-playlist',
+    element:(
+      <PrivateRoute>
+        <CreatePlaylistPage/>
+      </PrivateRoute>
+    )
   }]
 },{
   path:'/login',
@@ -28,6 +34,9 @@ const routes = [{
 },{
   path:'/signup',
   element:<SingupPage/>
+},{
+  path:'/about',
+  element: <AboutPage/>
 }]
 var router = createBrowserRouter(routes)
 function App() {

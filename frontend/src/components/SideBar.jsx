@@ -1,4 +1,10 @@
+import { useNavigate } from "react-router-dom"
+
 export default function SideBar(){
+    let navigate = useNavigate()
+    function createPlaylist(){
+        navigate("/create-playlist")
+    }
     return(
         <>
             <div className="inline-flex w-full h-15 p-3">
@@ -11,7 +17,7 @@ export default function SideBar(){
                 <div className="rounded-xl w-full h-35 p-3 bg-[#1F1F1F]">
                     <h2><b>Create your first playlist</b></h2>
                     <p className="text-sm mt-2">it's easy, we'll help you</p>
-                    <button className="text-sm text-black bg-white rounded-full mt-5 px-5 py-2"><b>Create playlist</b></button>
+                    <button className="text-sm text-black bg-white rounded-full mt-5 px-5 py-2" onClick={createPlaylist}><b>Create playlist</b></button>
                 </div>
             </div><br/>
             <div className="p-2">
