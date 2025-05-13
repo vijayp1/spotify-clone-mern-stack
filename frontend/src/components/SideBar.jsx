@@ -1,9 +1,16 @@
 import { useNavigate } from "react-router-dom"
+import { useAuth } from "../contexts/AuthContext"
 
 export default function SideBar(){
     let navigate = useNavigate()
+    const user = useAuth()
     function createPlaylist(){
-        navigate("/create-playlist")
+        if(user.user){
+            navigate("/create-playlist")
+        }
+        else{
+            navigate("/login")
+        }
     }
     return(
         <>

@@ -1,12 +1,16 @@
 import { Outlet } from "react-router-dom";
 import NavBar from "./NavBar";
 import SideBar from "./SideBar";
-import Footer from "./Footer";
+import { usePlayer } from "../contexts/PlayContext";
+import MusicPlayer from "./MusicPlayer";
 
 export default function LayoutPage(){
-
+    const { isPlaying, setIsPlaying } = usePlayer();
+    function stopMusic(){
+        setIsPlaying(false)
+    }
     return(
-        <div className="h-screen w-screen flex flex-col bg-black text-white">
+        <div className="h-screen w-screen flex flex-col bg-black text-white overflow-hidden">
             <div className="h-[8%] bg-black">
                 <NavBar/>
             </div>
@@ -18,6 +22,8 @@ export default function LayoutPage(){
                     <Outlet/>
                 </div>
             </div>
+            {isPlaying ? (<MusicPlayer isPlaying={isPlaying} stopMusic={stopMusic}/>) : (<></>)}
+            
         </div>
     )
 }

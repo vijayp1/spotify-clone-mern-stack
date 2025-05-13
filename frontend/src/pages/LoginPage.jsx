@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../utilities/SupabaseClient';
 
 export default function LoginPage() {
@@ -48,6 +48,7 @@ export default function LoginPage() {
             <input value={password} type={showPassword ? 'text' : 'password'} className='border-1 w-[90%] h-10 pl-2' onChange={e => passChanged(e.target.value)}/>
             <button className='w-[10%] flex justify-center items-center border-y-1 border-r-1' onClick={()=>setShowPassword(!showPassword)}>{showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}</button>
           </div>
+          <Link className='w-full text-blue-400' to="/signup">Create new account?</Link>
           <button className='w-full rounded-full bg-green-400 text-black font-bold h-15 mt-4' onClick={logInUser}>Log in</button>
       </div>
     </div>
