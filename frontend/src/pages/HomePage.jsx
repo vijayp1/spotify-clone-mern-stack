@@ -18,9 +18,9 @@ export default function HomePage(){
     const albums = Array.from(albumsMap.values());
     return(
         <div>
-            <SongsList list={songs} title={'Trending songs'} type={'song'}/>
-            <SongsList list={artists} title={'Popular Artists'} type={'artist'}/>
-            <SongsList list={albums} title={'Popular Albums'} type={'album'}/>
+            {songs && songs.length>0 ? (<SongsList list={songs} title={'Trending songs'} type={'song'}/>) : ""}
+            {artists && artists.length>0 ? (<SongsList list={artists} title={'Popular Artists'} type={'artist'}/>) : ""}
+            {albums && albums.length>0 ? (<SongsList list={albums} title={'Popular Albums'} type={'album'}/>) : ""}
             <Footer/>
         </div>
     )

@@ -7,8 +7,17 @@ import { supabase } from "../utilities/SupabaseClient";
 export default function NavBar(){
     const { user } = useAuth()
     const [open, setOpen] = useState(false)
+    const [ search, searchChange ] = useState('')
     const menuRef = useRef(null);
     const navigate = useNavigate()
+    function searchHome(val){
+        searchChange(val)
+        console.log("val:",val," search : ",search)
+        if(val)
+            navigate("/home/"+val)
+        else
+        navigate('/')
+    }
     async function logOutUser() {
         const { error } = await supabase.auth.signOut();
 
@@ -42,7 +51,7 @@ export default function NavBar(){
                     </Link>
                 </div>
                 <div className="ml-5 rounded-full inline-flex items-center bg-[#2F2F2F] w-140 h-12">
-                    <input className="w-[85%] pl-4" type="text" placeholder="What do you want to play?" />
+                    <input className="w-[85%] pl-4 outline-hidden" type="text" placeholder="What do you want to play?" onChange={e => searchHome(e.target.value)} value={search} />
                     <div className="h-6 w-px bg-gray-400 mx-4"></div>
                     <Link className="w-auto pt-5 pb-5 mr-2" to='/browse'>
                         <img className="w-6 h-6 invert brightness-0" src="https://img.icons8.com/fluency-systems-regular/48/shopping-basket-2.png" alt="browse genres"/>

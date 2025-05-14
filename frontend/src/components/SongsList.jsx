@@ -41,7 +41,7 @@ export default function SongsList(props){
             <div className="flex justify-between items-center">
                 <h1 className="text-[23px]"><b>{title}</b></h1>
                 {list.length > limit ? 
-                (<button className="text-sm font-bold text-gray-400 cursor-pointer" onClick={()=>{setLimit(limit+4)}}>Show more</button>)
+                (<button className="text-sm font-bold text-gray-400 cursor-pointer" onClick={()=>{setLimit(limit+10)}}>Show more</button>)
                 : ""}
             </div>
             <div className="flex overflow-x-auto no-scrollbar">

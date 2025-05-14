@@ -1,5 +1,11 @@
 import express from 'express'
 import { MongoClient, ServerApiVersion } from 'mongodb'
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+import { v4 as uuidv4 } from 'uuid'
+
+
+dotenv.config();
 
 const app = express()
 app.use(express.json())
@@ -11,6 +17,24 @@ const client = new MongoClient(uri,{
         deprecationErrors: true
     }
 })
+// const jwt = require('jsonwebtoken');
+// const jwksClient = require('jwks-rsa');
+
+export const authenticate = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer '))
+    return res.status(401).json({ error: 'Missing or invalid Authorization header' });
+
+  const token = authHeader.split(' ')[1];
+
+  try {
+    const decoded = jwt.verify(token, process.env.SUPABASE_JWT_SECRET);
+    req.user = decoded; // includes email, sub (user id), etc.
+    next();
+  } catch (err) {
+    return res.status(403).json({ error: 'Token verification failed' });
+  }
+};
 await client.connect()
 const db = client.db('local')
 
@@ -25,6 +49,42 @@ app.get('/songs',async (req,res)=>{
 app.get('/artists',async (req,res)=>{
     const data = await db.collection('artists').find().toArray()
     res.json(data)
+})
+app.get('/playlists',authenticate,async (req,res)=>{
+    const userEmail = req.user.email
+    const data = await db.collection('playlists').find({"userid":userEmail}).toArray()
+    res.json(data)
+})
+app.get('/createPlaylist/:playlistName',authenticate,async (req,res)=>{
+    const userEmail = req.user.email
+    const playlistName = req.params.playlistName
+  
+
+    const newPlaylist = {
+      _id: uuidv4(),
+      userid: userEmail,
+      title: playlistName,
+      songs: []
+    }
+
+    await db.collection('playlists').insertOne(newPlaylist)
+    res.status(201).json({ message: 'Playlist created successfully'})
+
+    
+})
+app.get('/songs/:search',async (req,res)=>{
+  const search = req.params.search
+  const data = await db.collection('songs').find({
+      title: { $regex: search, $options: 'i' } 
+    }).toArray()
+  res.json(data)
+})
+app.get('/artists/:search',async (req,res)=>{
+  const search = req.params.search
+  const data = await db.collection('artists').find({
+      title: { $regex: search, $options: 'i' } 
+    }).toArray()
+  res.json(data)
 })
 
 app.post('/artists',async (req,res)=>{

@@ -13,7 +13,10 @@ import PrivateRoute from './components/PrivateRoute'
 import SelectedCategoryPage from './pages/SelectedCategoryPage'
 import PlaySongPage from './pages/PlaySongPage'
 import SongsListPage from './pages/SongsListPage'
+import { supabase } from './utilities/SupabaseClient'
 
+const { data: { session } } = await supabase.auth.getSession();
+const accessToken = session?.access_token;
 
 const routes = [{
   path:'/',
@@ -28,6 +31,15 @@ const routes = [{
       return { artists, songs}
     }
   },{
+    path:'/home/:search',
+    element:<HomePage/>,
+    loader: async function({params}){
+      const { search } = params
+      const artists = (await axios.get('/api/artists/'+search)).data
+      const songs = (await axios.get('/api/songs/'+search)).data
+      return { artists, songs}
+    }
+  },{
     path:'/browse',
     element:<BrowsePage/>,
     loader: async function() {
@@ -38,7 +50,16 @@ const routes = [{
     }
   },{
     path:'/create-playlist',
-    element:<CreatePlaylistPage/>
+    element:<CreatePlaylistPage/>,
+    loader: async function() {
+      const data = (await axios.get('/api/playlists',{
+                      headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                      }
+                    })).data
+      console.log("data: ",data)
+      return { data }
+    }
   },{
     path:'/genre/:id',
     element:<SelectedCategoryPage/>
